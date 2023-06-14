@@ -1,0 +1,84 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Runner
+{
+    +void run();
+    -int errorCode;
+}
+namespace commpent{
+    class UserInterface
+    {
+    +void picker();
+    --
+    -{static} void addDevice();
+    -void removeDevice();
+    -void updateDevice();
+    -void getOneDevice();
+    -{static} void printAllDevice();
+    -{static} void searchDevice();
+    -{static} void filterExpDevice();
+    -{static} void sortAndShowDevice();
+    }
+    class DeviceData
+    {
+        -DeviceList * head;
+        -DeviceList * tail;
+        -int size;
+        -bool checkIdPresent(int id);
+        ==
+        +{static} bool isDateValid(Dates expDate);
+        +{static} bool isExp(Dates expDate);
+        +{static} std::string tostr(Status status);
+        --
+        +void add(...);
+        +void remove(int id);
+        +void remove(const std::string& name);
+        +void update(...);
+        +searchType search(const std::string& name);
+        +int getID(const std::string& name);
+        +searchType findExp();
+        +void sortDevice(SortType st);
+        +Device *get(int id);
+        +Device *get(const std::string& name);
+        +searchType get();
+        ==
+        +void readFile();
+        +void writeFile();
+    }
+}
+struct deviceList {
+        Device * data = nullptr;
+        deviceList * next = nullptr;
+    }
+struct Device{
+            int id;
+            std::string name;
+            std::string type;
+            Dates expDate;
+            Status status;
+            std::string location;
+            std::string description;
+            Dates buyDate;
+            double price;
+        }
+enum Status {
+        UNUSED,
+        ON,
+        OFF,
+        BROKEN,
+        RECYCLED
+   }
+enum SortType{
+        byID,
+        byPrice,
+        byExpDate,
+        byBuyDate
+    }
+UserInterface <|-- Runner
+DeviceData <|-- Runner
+Status --* DeviceData
+deviceList --* DeviceData
+Device --* deviceList
+SortType --* DeviceData
+@enduml
